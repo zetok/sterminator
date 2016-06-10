@@ -1,6 +1,6 @@
 [package]
 name = "sterminator"
-version = "0.0.0"
+version = "0.0.1"
 authors = ["Zetok Zalbavar <zetok@openmailbox.org>"]
 
 [dependencies]

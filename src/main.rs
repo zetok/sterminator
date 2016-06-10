@@ -102,15 +102,15 @@ fn main() {
 
     let mut www = String::new();
     drop(web_file.read_to_string(&mut www));
-    
+
     for (original, translation) in json.as_object()
         .expect(&format!("JSON {} is not an object!", json))
     {
-        let tr = translation.as_string()
-            .expect(&format!("{:?} is not a string!", translation));
+        // use original if not string
+        let tr = translation.as_string().unwrap_or(original);
 
         // Replaces `[[[String]]]` with supplied `String`.
-        // 
+        //
         // If there is no matching `[[[String]]]`, there's no change.
         if tr.is_empty() {
             www = www.replace(&format!("[[[{}]]]", original), original);
@@ -120,7 +120,9 @@ fn main() {
     }
 
     // write the file down
+    drop(web_file.set_len(0).expect(
+        &format!("Failed to truncate file {:?}", web_file)));
     web_file.write_all(www.as_bytes())
         .expect(&format!("Failed to write to file {:?}", web_file));
-    println!("{} done.", &args[1]);
+    println!("Done: {}", &args[1]);
 }
