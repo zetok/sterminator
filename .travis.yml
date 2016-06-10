@@ -1,0 +1,22 @@
+language: rust
+rust:
+  - stable
+  - beta
+  - nightly
+
+os:
+  - linux
+  - osx
+
+branches:
+  except:
+    - test
+
+matrix:
+  allow_failures:
+  - rust: beta
+  - rust: nightly
+  - os: osx
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash ./scripts/verify-commit-messages.sh "$TRAVIS_COMMIT_RANGE" ; fi
