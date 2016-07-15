@@ -119,9 +119,11 @@ fn main() {
         }
     }
 
+    // truncate the file before writing
+    drop(web_file);
+    let mut web_file = File::create(&args[1]).expect("Failed to create web_file!");
+
     // write the file down
-    drop(web_file.set_len(0).expect(
-        &format!("Failed to truncate file {:?}", web_file)));
     web_file.write_all(www.as_bytes())
         .expect(&format!("Failed to write to file {:?}", web_file));
     println!("Done: {}", &args[1]);
